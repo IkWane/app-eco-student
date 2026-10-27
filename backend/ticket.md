@@ -115,7 +115,7 @@ Label `chore` · branche `chore/8-release`
 Label `feature` · branche `feature/9-validate-middleware`
 
 - `validate(schema, source)` avec `source` = `body` ou `query`
-- Données valides : remplace `req[source]` par la sortie parsée et appelle `next()`
+- Données valides : stocke la sortie parsée dans `req.validatedBody` ou `req.validatedQuery` et appelle `next()`. Avec Express 5, `req.query` est en lecture seule : ne pas faire `req.query = parsed`
 - Données invalides : 400 avec `details` = liste `{ path, message }` issue de Zod
 - Utilisable sur n'importe quelle route : `router.post('/', validate(expenseSchema), controller.create)`
 
@@ -169,6 +169,7 @@ Label `feature` · branche `feature/15-frontend-expenses`
 
 - Liste des dépenses du mois courant avec sélecteur de mois et filtre par catégorie
 - Formulaire d'ajout et d'édition validé avec `expenseSchema`, typé avec `z.infer`
+- Le montant est envoyé comme un nombre (`valueAsNumber` ou `Number(...)`), pas comme du texte, sinon le schéma le refuse
 - Suppression avec confirmation
 - État vide (« Aucune dépense ce mois-ci ») et état de chargement
 

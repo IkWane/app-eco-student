@@ -5,5 +5,8 @@
     "license": "ISC",
     "author": "",
     "type": "module",
-    "main": "app.js"
+    "main": "app.js",
+    "dependencies": {
+        "@eco/shared": "*"
+    }
 }
