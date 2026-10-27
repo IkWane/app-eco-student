@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Annule les exécutions précédentes encore en cours sur la même branche / PR.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run lint
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+
+    # Valeurs reprises de backend/.env.example (identifiants de test, pas de vrais secrets).
+    env:
+      MYSQL_HOST: 127.0.0.1
+      MYSQL_PORT: 3306
+      MYSQL_DATABASE: eco_student
+      MYSQL_USER: eco
+      MYSQL_PASSWORD: changeme
+
+    services:
+      mysql:
+        image: mysql:8.4
+        # Le contexte `env` n'est pas disponible ici : les valeurs sont répétées.
+        env:
+          MYSQL_ROOT_PASSWORD: changeme_root
+          MYSQL_DATABASE: eco_student
+          MYSQL_USER: eco
+          MYSQL_PASSWORD: changeme
+          TZ: Europe/Paris
+        ports:
+          - 3306:3306
+        # Ping en TCP (127.0.0.1) : le serveur temporaire d'initialisation de l'image
+        # n'écoute pas sur le réseau, le service n'est donc « healthy » qu'une fois prêt.
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pchangeme_root"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Applique le schéma MySQL
+        run: >-
+          mysql --protocol=TCP --default-character-set=utf8mb4
+          -h "$MYSQL_HOST" -P "$MYSQL_PORT"
+          -u "$MYSQL_USER" -p"$MYSQL_PASSWORD"
+          "$MYSQL_DATABASE" < backend/db/init/01-schema.sql
+
+      - run: npm test
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build -w frontend
