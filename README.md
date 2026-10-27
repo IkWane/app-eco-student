@@ -40,7 +40,7 @@ git clone git@github.com:IkWane/app-eco-student.git
 cd app-eco-student
 
 # Installe les dépendances des trois workspaces d'un coup
-npm install --omit=dev
+npm install
 ```
 
 ### Variables d'environnement
