@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import authRoutes from './auth.routes.js';
 
 // Routeur racine monté sous /api dans app.js.
 // Chaque ticket y branche ses routes, par exemple : router.use('/auth', authRoutes);
@@ -8,5 +9,7 @@ const router = Router();
 router.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+router.use('/auth', authRoutes);
 
 export default router;
