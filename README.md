@@ -91,3 +91,85 @@ Le backend (`http://localhost:3000`) et le frontend (`http://localhost:5173`) d�
 | `npm run build -w frontend` | Vérifie les types (`tsc -b`) et construit le front dans `frontend/dist` |
 | `npm run dev -w backend` | Backend seul, avec rechargement (`node --watch`) |
 | `npm run dev -w frontend` | Frontend seul (Vite) |
+
+## Arborescence
+
+```text
+app-eco-student/
+├── .github/                  # CI, Dependabot, modèles de PR et d'issue
+├── shared/                   # @eco/shared : schémas Zod (JavaScript)
+│   ├── src/schemas/          # auth, category, expense
+│   └── tests/
+├── backend/                  # API Express
+│   ├── src/
+│   │   ├── config/           # env, db (pool mysql2), jwt
+│   │   ├── routes/           # routeur monté sous /api
+│   │   ├── controllers/      # lit la requête, appelle le service, répond
+│   │   ├── services/         # logique métier et requêtes SQL
+│   │   ├── middlewares/      # auth, validation Zod, erreurs
+│   │   ├── app.js            # crée et exporte l'app, sans listen()
+│   │   └── index.js          # lance listen()
+│   ├── db/init/01-schema.sql # schéma appliqué au premier démarrage de MySQL
+│   ├── docker-compose.yml
+│   └── .env.example
+├── frontend/                 # React + TypeScript + Vite
+│   ├── src/
+│   │   ├── api/              # client fetch et appels par ressource
+│   │   ├── auth/             # AuthContext, ProtectedRoute
+│   │   ├── components/       # composants du design system
+│   │   ├── lib/              # formats, validation de formulaires
+│   │   ├── pages/            # Login, Register, Dashboard, Expenses, Categories
+│   │   └── styles/           # tokens et composants CSS
+│   └── .env.example
+├── package.json              # workspaces : shared, backend, frontend
+└── README.md
+```
+
+Le même schéma Zod valide le formulaire côté front et la requête côté back : le front l'importe grâce à `"allowJs": true` dans `frontend/tsconfig.app.json` et en tire les types avec `z.infer<typeof expenseSchema>`.
+
+## Contrat d'API
+
+Toutes les routes sont sous `/api`. Sauf `health`, `register` et `login`, elles exigent `Authorization: Bearer <token>`.
+
+| Méthode | Route | Corps / paramètres | Réponse |
+| --- | --- | --- | --- |
+| GET | `/api/health` | | 200 `{ status: "ok" }` |
+| POST | `/api/auth/register` | `{ email, password }` | 201 `{ token, user }`, 409 si l'email est pris |
+| POST | `/api/auth/login` | `{ email, password }` | 200 `{ token, user }`, 401 sinon |
+| GET | `/api/auth/me` | | 200 `{ user }` |
+| GET | `/api/categories` | | 200, catégories par défaut et perso |
+| POST | `/api/categories` | `{ name, color }` | 201 |
+| DELETE | `/api/categories/:id` | | 204, 403 si par défaut, 409 si utilisée |
+| GET | `/api/expenses` | `?month=2026-10&categoryId=3` | 200, triées par date décroissante |
+| POST | `/api/expenses` | `{ label, amount, spentOn, categoryId }` | 201 |
+| PUT | `/api/expenses/:id` | même corps | 200 |
+| DELETE | `/api/expenses/:id` | | 204 |
+| GET | `/api/stats/monthly` | `?months=6` | 200 `[{ month, total }]` |
+| GET | `/api/stats/by-category` | `?month=2026-10` | 200 `[{ categoryId, name, color, total }]` |
+
+- Montants en **euros** dans l'API (`amount: 12.5`), dates au format `YYYY-MM-DD` (`spentOn`).
+- Erreurs : `{ "error": { "message", "details" } }` ; `400` pour un corps ou une query invalide (`details` : liste de `{ path, message }`), `401` sans token valide, `404` pour une ressource absente ou appartenant à un autre utilisateur.
+
+## Workflow Git
+
+GitHub Flow : un ticket = une branche = une Pull Request relue, et `main` reste toujours fonctionnelle.
+
+1. Prendre son ticket dans le Kanban et le passer en « En cours ».
+2. `git switch main && git pull`, puis `git switch -c feature/12-expenses-crud`. Préfixes : `feature/`, `fix/`, `docs/`, `chore/`, `test/`, `ci/` ; numéro de l'issue ; minuscules et tirets.
+3. Commiter petit et souvent, un commit = une intention, au format [Conventional Commits](https://www.conventionalcommits.org/fr/) à l'impératif : `feat(expenses): ajoute la route POST /expenses`.
+4. Avant la PR : `git fetch && git rebase origin/main` sur sa propre branche, puis `git push --force-with-lease`.
+5. Ouvrir la PR avec le modèle du dépôt : titre au format commit, quoi / pourquoi / comment tester, `Closes #12`, moins de 400 lignes.
+6. Un relecteur lit tout le diff et approuve ou demande des changements ; la CI doit être verte.
+7. Fusion par l'auteur après approbation, puis suppression de la branche.
+
+Interdit : pousser sur `main`, pousser un vrai secret (seul `.env.example` est commité), réécrire l'historique de `main`, fusionner sans relecture. Pour annuler un changement déjà fusionné, on utilise `git revert` dans une PR.
+
+## Équipe
+
+| Rôle | Membre | Périmètre |
+| --- | --- | --- |
+| P1 | [@YusufByn](https://github.com/YusufByn) | Monorepo, schémas partagés, CI |
+| P2 | [@IkWane](https://github.com/IkWane) | Schéma MySQL, socle backend, authentification, release |
+| P3 | [@Tom0204](https://github.com/Tom0204) | Validation, catégories, dépenses (API) |
+| P4 | [@aymanmechal](https://github.com/aymanmechal) | Frontend : socle, authentification, page Dépenses, README |
+| P5 | [@Nilus-001](https://github.com/Nilus-001) | Statistiques, tableau de bord, page Catégories |
