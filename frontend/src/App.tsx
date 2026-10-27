@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router'
+import { ProtectedRoute } from './auth/ProtectedRoute.tsx'
 import { Layout } from './components/Layout.tsx'
 import { CategoriesPage } from './pages/CategoriesPage.tsx'
 import { DashboardPage } from './pages/DashboardPage.tsx'
@@ -11,10 +12,12 @@ function App() {
     <Routes>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/register" element={<RegisterPage />} />
-      <Route element={<Layout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="/expenses" element={<ExpensesPage />} />
-        <Route path="/categories" element={<CategoriesPage />} />
+      <Route element={<ProtectedRoute />}>
+        <Route element={<Layout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="/expenses" element={<ExpensesPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
+        </Route>
       </Route>
     </Routes>
   )
