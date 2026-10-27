@@ -5,8 +5,5 @@
     "license": "ISC",
     "author": "",
     "type": "module",
-    "main": "app.js",
-    "scripts": {
-        "test": "test"
-    }
+    "main": "app.js"
 }

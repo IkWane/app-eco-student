@@ -1,0 +1,24 @@
+{
+  "name": "app-eco-student",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Application web de suivi de budget étudiant",
+  "type": "module",
+  "workspaces": [
+    "shared",
+    "backend",
+    "frontend"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c blue,magenta \"npm run dev -w backend --if-present\" \"npm run dev -w frontend\"",
+    "lint": "oxlint",
+    "test": "npm test --workspaces --if-present"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.6",
+    "oxlint": "^1.90.0"
+  }
+}
