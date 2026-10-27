@@ -40,6 +40,9 @@ jobs:
       MYSQL_DATABASE: eco_student
       MYSQL_USER: eco
       MYSQL_PASSWORD: changeme
+      PORT: 3000
+      JWT_SECRET: changeme_changeme_changeme_changeme
+      CORS_ORIGIN: http://localhost:5173
 
     services:
       mysql:
