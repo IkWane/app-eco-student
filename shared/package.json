@@ -1,0 +1,14 @@
+{
+  "name": "@eco/shared",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Schémas Zod partagés entre le backend et le frontend",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  }
+}
