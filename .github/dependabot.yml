@@ -1,0 +1,23 @@
+version: 2
+
+updates:
+  # Dépendances npm de tout le monorepo (un seul package-lock.json, à la racine).
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore(deps)
+    labels:
+      - dependencies
+
+  # Actions utilisées dans .github/workflows/.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: ci(deps)
+    labels:
+      - dependencies
