@@ -107,7 +107,6 @@ export function CategoriesPage() {
                 {categories.length}
               </span>
             </h2>
-            <span className="bu-list-hint">les catégories par défaut d&apos;abord</span>
           </header>
           <ul className="bu-list-items">
             {[...defaults, ...personal].map((category) => (

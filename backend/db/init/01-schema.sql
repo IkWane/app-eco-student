@@ -2,6 +2,10 @@
 -- Après une modification : docker compose -f backend/docker-compose.yml down -v puis up -d.
 -- Montants en centimes (INT), dates de dépense en DATE.
 
+-- Le client MySQL de l'init Docker lit le fichier en latin1 par défaut :
+-- sans cette ligne, « Études » est enregistré « Ã‰tudes ».
+SET NAMES utf8mb4;
+
 CREATE TABLE IF NOT EXISTS users (
   id            INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   email         VARCHAR(255) NOT NULL UNIQUE,
