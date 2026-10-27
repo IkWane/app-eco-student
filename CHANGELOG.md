@@ -50,7 +50,7 @@ Chaque entrée renvoie à la Pull Request qui l'a introduite dans `main`, de la 
 ### [#35] · test(stats): couvre les calculs de statistiques (T18)
 
 #### Added
-- Tests Vitest de `monthlyTotals`, `totalsByCategory` et `lastMonths` : somme d'un même mois, mois sans dépense à 0, regroupement par catégorie.
+- Tests Vitest de `monthlyTotals`, `lastMonths` et `totalsByCategory` : somme d'un même mois du 1er au 31, mois sans dépense à 0, addition en centimes (0,10 € + 0,20 €), passage le 31 et à l'année précédente, regroupement par catégorie.
 
 ### [#34] · revert: annule un push direct sur `main`
 
@@ -170,7 +170,7 @@ Chaque entrée renvoie à la Pull Request qui l'a introduite dans `main`, de la 
 ### [#4] · test(shared): couvre les schémas Zod (T3)
 
 #### Added
-- Vitest dans `shared` et tests de `expenseSchema` (dépense valide, montant négatif, date invalide) et de `loginSchema` (email invalide).
+- Vitest dans `shared` et tests de `expenseSchema` (dépense valide, date inexistante `2026-13-01`, montant à 3 décimales) et de `loginSchema` (identifiants valides, email invalide, mot de passe de 7 caractères).
 
 ### [#3] · feat(shared): schémas Zod partagés (T2)
 
