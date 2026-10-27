@@ -1,4 +1,5 @@
 import { NavLink, Outlet, type NavLinkRenderProps } from 'react-router'
+import { useAuth } from '../auth/useAuth.ts'
 import { Icon, type IconName } from './Icon.tsx'
 
 type NavItem = { to: string; label: string; icon: IconName; end?: boolean }
@@ -10,6 +11,8 @@ const NAV_ITEMS: NavItem[] = [
 ]
 
 export function Layout() {
+  const { logout } = useAuth()
+
   return (
     <>
       <header className="app-header">
@@ -32,6 +35,10 @@ export function Layout() {
               <span className="app-nav-label">{item.label}</span>
             </NavLink>
           ))}
+          <button type="button" className="bu-btn bu-btn-ghost app-logout" onClick={logout} aria-label="Se déconnecter">
+            <Icon name="logout" />
+            <span className="app-nav-label">Déconnexion</span>
+          </button>
         </nav>
       </header>
       <main className="app-main">

@@ -13,6 +13,7 @@ const PATHS = {
   chart: 'M4 20h16M6.5 20v-6M11 20V6M15.5 20v-9M20 20V9',
   pie: 'M11 4.1A8 8 0 1 0 19.9 13H11zM14 3.5v6.5h6.5A7 7 0 0 0 14 3.5z',
   tag: 'M4 4h7l9 9-7 7-9-9zM8 8h.01',
+  logout: 'M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 8l-4 4 4 4M6 12h10',
 } as const
 
 export type IconName = keyof typeof PATHS
