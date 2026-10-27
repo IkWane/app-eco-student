@@ -20,3 +20,13 @@
 .auth-card a { color: var(--brand); font-weight: 700; }
 .auth-loading { padding: var(--space-8) var(--space-4); text-align: center; }
 .app-logout { color: var(--ink-muted); }
+
+/* Page Dépenses */
+.page-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3); }
+.expense-form { display: flex; flex-direction: column; gap: var(--space-4); }
+.expense-form-grid { display: grid; gap: var(--space-4); grid-template-columns: 1fr; }
+.expense-form-actions { display: flex; justify-content: flex-end; gap: var(--space-2); }
+.expenses-total { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-3); }
+.expenses-total .amount { font-size: 24px; line-height: 30px; font-variant-numeric: tabular-nums; }
+.expenses-loading { padding: var(--space-8) 0; text-align: center; }
+@media (min-width: 640px) { .expense-form-grid { grid-template-columns: 1fr 1fr; } }
