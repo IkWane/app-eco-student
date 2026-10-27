@@ -1,2 +1,3 @@
-// Point d'entrée de @eco/shared : les schémas Zod partagés seront exportés ici.
-export {};
+export { registerSchema, loginSchema } from './schemas/auth.schema.js';
+export { categorySchema } from './schemas/category.schema.js';
+export { expenseSchema, expenseQuerySchema } from './schemas/expense.schema.js';
