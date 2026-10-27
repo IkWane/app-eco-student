@@ -4,7 +4,6 @@ import statsRoutes from './stats.routes.js';
 
 // Routeur racine monté sous /api dans app.js.
 // Chaque ticket y branche ses routes, par exemple : router.use('/auth', authRoutes);
-router.use('/stats', statsRoutes);
 const router = Router();
 
 // Sonde de vie : permet de vérifier que l'API répond (front, CI, curl).
