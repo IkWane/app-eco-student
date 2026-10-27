@@ -10,6 +10,7 @@
         "@eco/shared": "*",
         "cors": "^2.8.6",
         "dotenv": "^18.0.9",
+        "epxress": "^0.0.1-security",
         "mysql2": "^3.24.6"
     }
 }
