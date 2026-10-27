@@ -26,8 +26,45 @@ Chaque entrée renvoie à la Pull Request qui l'a introduite dans `main`, de la 
 [#35]: https://github.com/IkWane/app-eco-student/pull/35
 [#36]: https://github.com/IkWane/app-eco-student/pull/36
 [#37]: https://github.com/IkWane/app-eco-student/pull/37
+[#38]: https://github.com/IkWane/app-eco-student/pull/38
+[#39]: https://github.com/IkWane/app-eco-student/pull/39
+[#40]: https://github.com/IkWane/app-eco-student/pull/40
+[#41]: https://github.com/IkWane/app-eco-student/pull/41
+[#43]: https://github.com/IkWane/app-eco-student/pull/43
+[1.0.0]: https://github.com/IkWane/app-eco-student/compare/v0.1.0...v1.0.0
+[0.1.0]: https://github.com/IkWane/app-eco-student/releases/tag/v0.1.0
 
-## [Unreleased]
+## [1.0.0] - 2026-10-27
+
+Première version complète : authentification, catégories, dépenses filtrables, tableau de bord et graphique mensuel.
+
+### [#43] · fix(test): exécute les tests des dépenses
+
+#### Fixed
+- `expenses.tests.js` renommé en `expenses.test.js` : Vitest ignorait le fichier, les 4 tests de T12 ne tournaient pas (introduit par `929f9c2`).
+
+### [#41] · fix(ui): accents en base et ajustement de la page Catégories
+
+#### Fixed
+- `SET NAMES utf8mb4` en tête de `01-schema.sql` : le client MySQL de l'init Docker lisait le fichier en latin1, et « Études » était enregistré « Ã‰tudes » (introduit par `b640273`).
+
+#### Changed
+- Mention « les catégories par défaut d'abord » retirée de l'en-tête de la liste des catégories.
+
+### [#40] · docs(changelog): CHANGELOG des PR #2 à #37 (T8)
+
+#### Added
+- `CHANGELOG.md` au format Added / Changed / Fixed, une section par Pull Request.
+
+### [#39] · revert: annule un push direct sur `main`
+
+#### Fixed
+- Annulation par `git revert` du commit `a2ba124`, poussé directement sur `main` sans PR (deuxième push direct après `3f07afc`).
+
+### [#38] · fix(frontend): une seule copie de React
+
+#### Fixed
+- `resolve.dedupe` sur `react` et `react-dom` dans `vite.config.ts` : deux copies de React étaient chargées dans le monorepo depuis l'ajout de `recharts` (`125a53a`), ce qui provoque des erreurs de hooks React.
 
 ### [#37] · feat(frontend-categories): page Catégories (T20)
 
@@ -50,12 +87,16 @@ Chaque entrée renvoie à la Pull Request qui l'a introduite dans `main`, de la 
 ### [#35] · test(stats): couvre les calculs de statistiques (T18)
 
 #### Added
-- Tests Vitest de `monthlyTotals`, `totalsByCategory` et `lastMonths` : somme d'un même mois, mois sans dépense à 0, regroupement par catégorie.
+- Tests Vitest de `monthlyTotals`, `lastMonths` et `totalsByCategory` : somme d'un même mois du 1er au 31, mois sans dépense à 0, addition en centimes (0,10 € + 0,20 €), passage le 31 et à l'année précédente, regroupement par catégorie.
 
 ### [#34] · revert: annule un push direct sur `main`
 
 #### Fixed
 - Annulation par `git revert` du commit `3f07afc`, poussé directement sur `main` sans PR. Le même contenu est réintroduit proprement par [#35].
+
+## [0.1.0] - 2026-10-27
+
+Fin du Sprint 1 : monorepo, schémas partagés, CI, socle backend, authentification, CRUD catégories et dépenses, socle et pages du front, statistiques.
 
 ### [#29] · feat(stats): service et routes de statistiques (T17)
 
@@ -170,7 +211,7 @@ Chaque entrée renvoie à la Pull Request qui l'a introduite dans `main`, de la 
 ### [#4] · test(shared): couvre les schémas Zod (T3)
 
 #### Added
-- Vitest dans `shared` et tests de `expenseSchema` (dépense valide, montant négatif, date invalide) et de `loginSchema` (email invalide).
+- Vitest dans `shared` et tests de `expenseSchema` (dépense valide, montant négatif ou nul, date inexistante `2026-13-01`, montant à 3 décimales) et de `loginSchema` (identifiants valides, email invalide, mot de passe de 7 caractères).
 
 ### [#3] · feat(shared): schémas Zod partagés (T2)
 
