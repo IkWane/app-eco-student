@@ -11,6 +11,6 @@ export type Category = {
   id: number
   name: string
   color: string
-  // null = catégorie par défaut.
-  userId?: number | null
+  // true = catégorie par défaut, commune à tous et non supprimable.
+  isDefault: boolean
 }
