@@ -1,3 +1,22 @@
+# Dépendances
+node_modules/
+
+# Builds et couverture
+dist/
+dist-ssr/
+coverage/
+*.tsbuildinfo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Système / éditeurs
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
 # Secrets locaux
 .env
 .env.*
