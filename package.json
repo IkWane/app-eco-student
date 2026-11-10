@@ -18,7 +18,7 @@
     "test": "npm test --workspaces --if-present"
   },
   "devDependencies": {
-    "concurrently": "^10.0.6",
+    "concurrently": "^10.0.7",
     "oxlint": "^1.90.0"
   }
 }
